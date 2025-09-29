@@ -3,10 +3,21 @@ on: [push]
 jobs:
   build-app:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: CLImobile  # ⬅️ remplace par le bon chemin (ex: android, app, client, etc.)
     steps:
-      - run: echo "Hello World"
       - uses: actions/checkout@v4
-      - name : Setup Gradle
+
+      - name: Afficher l'arborescence pour vérifier
+        run: |
+          pwd
+          ls -la
+          ls -la ..
+
+      - name: Setup Gradle (cache)
         uses: gradle/actions/setup-gradle@v4
-      - name: Build with Gradle
-        run: gradle build
+
+      - name: Build
+        run: ./gradlew build          # préférable si le wrapper est versionné
+        # ou: run: gradle build       # si tu n'as PAS le wrapper (moins recommandé)
